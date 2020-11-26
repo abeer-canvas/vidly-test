@@ -12,12 +12,16 @@ const rentals = require('./routes/rentals');
 const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
+const { logger } = require('./logger');
 const app = express();
 
-winston.add(new winston.transports.File({ 
-  filename: 'logfile.log',
-  handleExceptions: true
+logger.add(new winston.transports.Console({
+  format: winston.format.simple()
 }));
+// winston.add(new winston.transports.File({ 
+//   filename: 'logfile.log',
+//   handleExceptions: true
+// }));
 
 if(!config.get('jwtPrivateKey')){
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');
