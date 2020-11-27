@@ -21,6 +21,11 @@ process.on('uncaughtException', (ex)=> {
   logger.error('Error', ex);
 });
 
+process.on('unhandledRejection', (ex)=> {
+  console.log('WE GOT AN UNHANDLED REJECTION');
+  logger.error('Error', ex);
+});
+
 logger.add(new winston.transports.Console({
   format: winston.format.simple()
 }));
@@ -29,7 +34,8 @@ logger.add(new winston.transports.Console({
 //   handleExceptions: true
 // }));
 
-throw new Error('Something failed during startup.');
+const p = Promise.reject(new Error('Something failed miserably!'));
+p.then(()=> console.log('Done'));
 
 if(!config.get('jwtPrivateKey')){
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');
