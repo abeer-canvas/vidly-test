@@ -20,5 +20,5 @@ module.exports.logger = winston.createLogger({
             db: 'mongodb://localhost/vidly-test',
             options: { useUnifiedTopology: true }
         })
-    ]
+    ],
 });

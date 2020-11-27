@@ -16,6 +16,11 @@ const express = require('express');
 const { logger } = require('./logger');
 const app = express();
 
+process.on('uncaughtException', (ex)=> {
+  console.log('WE GOT AN UNCAUGHT EXCEPTION');
+  logger.error('Error', ex);
+});
+
 logger.add(new winston.transports.Console({
   format: winston.format.simple()
 }));
@@ -23,6 +28,8 @@ logger.add(new winston.transports.Console({
 //   filename: 'logfile.log',
 //   handleExceptions: true
 // }));
+
+throw new Error('Something failed during startup.');
 
 if(!config.get('jwtPrivateKey')){
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');
