@@ -14,17 +14,24 @@ const users = require('./routes/users');
 const auth = require('./routes/auth');
 const express = require('express');
 const { logger } = require('./logger');
+const { transports } = require('winston');
 const app = express();
 
-process.on('uncaughtException', (ex)=> {
-  logger.error('Error', ex);
-  process.exit(1);
-});
+// process.on('uncaughtException', (ex)=> {
+//   logger.error('Error', ex);
+//   // process.exit(1);
+// });
+
+logger.exceptions.handle(
+  new transports.File({ filename: 'exceptions.log' })
+);
 
 process.on('unhandledRejection', (ex)=> {
-  logger.error('Error', ex);
-  process.exit(1);
+  // logger.error('Error', ex);
+  // process.exit(1);
+  throw ex
 });
+
 
 logger.add(new winston.transports.Console({
   format: winston.format.simple()
@@ -36,6 +43,8 @@ logger.add(new winston.transports.Console({
 
 const p = Promise.reject(new Error('Something failed miserably!'));
 p.then(()=> console.log('Done'));
+
+throw new Error('Something got failed');
 
 if(!config.get('jwtPrivateKey')){
   console.error('FATAL ERROR: jwtPrivateKey is not defined.');

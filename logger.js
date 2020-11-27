@@ -1,4 +1,4 @@
-const { info, format } = require('winston');
+const { info, format, transports } = require('winston');
 const winston = require('winston');
 require('winston-mongodb');
 
@@ -13,12 +13,13 @@ module.exports.logger = winston.createLogger({
     defaultMeta: { service: 'user-service' },
     transports: [
         new winston.transports.File({ 
-            filename: 'error.log', level: 'error' 
+            filename: 'error.log', 
+            level: 'error'
         }),
         new winston.transports.MongoDB({
             level: 'error',
             db: 'mongodb://localhost/vidly-test',
             options: { useUnifiedTopology: true }
         })
-    ],
+    ]
 });
