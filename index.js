@@ -17,13 +17,13 @@ const { logger } = require('./logger');
 const app = express();
 
 process.on('uncaughtException', (ex)=> {
-  console.log('WE GOT AN UNCAUGHT EXCEPTION');
   logger.error('Error', ex);
+  process.exit(1);
 });
 
 process.on('unhandledRejection', (ex)=> {
-  console.log('WE GOT AN UNHANDLED REJECTION');
   logger.error('Error', ex);
+  process.exit(1);
 });
 
 logger.add(new winston.transports.Console({
